@@ -116,6 +116,145 @@
     });
   });
 
+  let youtubeAPI;
+  const loadYouTubeAPI = () => {
+    if (window.YT?.Player) return Promise.resolve(window.YT);
+    if (!youtubeAPI) youtubeAPI = new Promise((resolve, reject) => {
+      window.onYouTubeIframeAPIReady = () => resolve(window.YT);
+      const script = document.createElement('script');
+      script.src = 'https://www.youtube.com/iframe_api';
+      script.async = true;
+      script.onerror = () => { youtubeAPI = undefined; script.remove(); reject(new Error('Player unavailable')); };
+      document.head.append(script);
+    });
+    return youtubeAPI;
+  };
+
+  document.querySelectorAll('[data-work-gallery]').forEach(gallery => {
+    const tabs = [...gallery.querySelectorAll('.work-tab')];
+    const panels = [...gallery.querySelectorAll('.work-panel')];
+    const rail = gallery.querySelector('.work-rail');
+    let active = tabs[0];
+    let player;
+    let playerTimeout;
+    let mediaSession = 0;
+    const visibleTabs = () => tabs.filter(tab => !tab.hidden);
+    const stopVideos = () => {
+      mediaSession++;
+      clearTimeout(playerTimeout);
+      if (player) { player.destroy(); player = undefined; }
+      gallery.querySelectorAll('[data-video-frame]').forEach(frame => {
+        frame.querySelector('iframe')?.remove();
+        frame.querySelector('.player-message')?.remove();
+        frame.querySelector('img').hidden = false;
+        frame.querySelector('[data-video-id]').hidden = false;
+      });
+      gallery.querySelectorAll('.stop-video,.video-state').forEach(element => element.remove());
+    };
+    const select = (tab, reveal = false) => {
+      stopVideos();
+      active = tab;
+      tabs.forEach(item => {
+        item.setAttribute('aria-selected', String(item === tab));
+        item.tabIndex = item === tab ? 0 : -1;
+      });
+      panels.forEach(panel => {
+        const selected = panel.id === tab.getAttribute('aria-controls');
+        panel.hidden = !selected;
+        if (selected && motion) panel.animate([{ opacity: .15, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 420, easing: 'ease-out' });
+      });
+      const visible = visibleTabs();
+      gallery.querySelector('[data-work-position]').textContent = `${String(visible.indexOf(tab) + 1).padStart(2, '0')} / ${String(visible.length).padStart(2, '0')}`;
+      if (reveal) {
+        const rect = tab.getBoundingClientRect();
+        const box = rail.getBoundingClientRect();
+        if (rect.left < box.left || rect.right > box.right) rail.scrollBy({ left: rect.left - box.left, behavior: motion ? 'smooth' : 'auto' });
+      }
+    };
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => select(tab, true));
+      tab.addEventListener('keydown', event => {
+        const visible = visibleTabs();
+        const index = visible.indexOf(tab);
+        let next;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % visible.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + visible.length) % visible.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = visible.length - 1;
+        if (next === undefined) return;
+        event.preventDefault(); select(visible[next], true); visible[next].focus({ preventScroll: true });
+      });
+    });
+    gallery.querySelectorAll('[data-work-filter]').forEach(button => button.addEventListener('click', () => {
+      gallery.querySelectorAll('[data-work-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      tabs.forEach(tab => { tab.hidden = button.dataset.workFilter !== 'all' && tab.dataset.workKind !== button.dataset.workFilter; });
+      select(visibleTabs()[0]);
+      rail.scrollTo({ left: 0, behavior: 'instant' });
+    }));
+    const step = direction => {
+      const visible = visibleTabs();
+      select(visible[(visible.indexOf(active) + direction + visible.length) % visible.length], true);
+    };
+    gallery.querySelector('[data-work-prev]').addEventListener('click', () => step(-1));
+    gallery.querySelector('[data-work-next]').addEventListener('click', () => step(1));
+    gallery.querySelectorAll('[data-video-id]').forEach(button => button.addEventListener('click', () => {
+      stopVideos();
+      const session = mediaSession;
+      const frame = button.closest('[data-video-frame]');
+      const iframe = document.createElement('iframe');
+      iframe.id = `player-${gallery.id}-${button.dataset.videoId}`;
+      iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(button.dataset.videoId)}?rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+      iframe.title = button.dataset.videoTitle;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.style.opacity = '0';
+      iframe.tabIndex = -1;
+      button.hidden = true;
+      frame.append(iframe);
+      const message = document.createElement('div');
+      message.className = 'player-message'; message.setAttribute('role', 'status'); message.textContent = 'Loading film…';
+      frame.append(message);
+      const panel = button.closest('.work-panel');
+      const state = document.createElement('span'); state.className = 'video-state'; state.setAttribute('aria-live', 'polite');
+      panel.querySelector('.work-actions').append(state);
+      const fail = () => {
+        if (session !== mediaSession) return;
+        clearTimeout(playerTimeout);
+        if (player) { player.destroy(); player = undefined; }
+        iframe.remove(); frame.querySelector('img').hidden = false;
+        message.textContent = 'This player couldn’t load here.';
+        const link = document.createElement('a');
+        link.href = panel.querySelector('.work-actions a').href;
+        link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.className = 'pill light'; link.textContent = 'Watch on YouTube ↗';
+        message.append(link); if (!message.isConnected) frame.append(message);
+        state.textContent = '';
+      };
+      playerTimeout = setTimeout(fail, 10000);
+      loadYouTubeAPI().then(YT => {
+        if (session !== mediaSession || !iframe.isConnected) return;
+        player = new YT.Player(iframe.id, { events: {
+          onReady: event => {
+            if (session !== mediaSession) return;
+            clearTimeout(playerTimeout); message.remove();
+            frame.querySelector('img').hidden = true; iframe.style.opacity = '1'; iframe.tabIndex = 0;
+            event.target.playVideo();
+          },
+          onStateChange: event => {
+            if (session !== mediaSession) return;
+            state.textContent = event.data === 1 ? 'Now playing' : event.data === 2 ? 'Paused' : '';
+          },
+          onError: fail
+        } });
+      }).catch(fail);
+      const stop = document.createElement('button');
+      stop.type = 'button'; stop.className = 'text-link stop-video'; stop.textContent = 'Close player';
+      stop.addEventListener('click', () => { stopVideos(); button.focus({ preventScroll: true }); });
+      panel.querySelector('.work-actions').append(stop);
+    }));
+  });
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.target.matches('.world-switcher')) { entry.target.classList.toggle('in-view', entry.isIntersecting); return; }
