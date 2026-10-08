@@ -20,6 +20,10 @@
       button.textContent = enabled ? 'Replay comparison' : 'Replay · motion off';
       button.title = enabled ? 'Replay the personal-best comparison' : 'Enable Motion in the header to replay';
     });
+    document.querySelectorAll('[data-growth-replay]').forEach(button => {
+      button.disabled = !enabled;
+      button.title = enabled ? 'Replay the membership comparison' : 'Enable Motion in the header to replay';
+    });
     if (!enabled) document.getAnimations().forEach(animation => animation.cancel());
     if (save) try { localStorage.setItem('vincent-motion', enabled ? 'on' : 'off'); } catch {}
   };
@@ -77,24 +81,17 @@
     });
   });
 
-  document.querySelectorAll('[data-members]').forEach(grid => {
-    const total = Number(grid.dataset.members);
-    for (let i = 0; i < total; i++) {
-      const member = document.createElement('i'); member.style.setProperty('--i', i); grid.append(member);
-    }
-  });
-  document.querySelectorAll('[data-club]').forEach(club => {
-    const board = club.querySelector('[data-member-board]');
-    const count = club.querySelector('[data-club-count]');
-    club.querySelectorAll('[data-club-select]').forEach(button => button.addEventListener('click', () => {
-      const earlier = button.dataset.clubSelect === 'earlier';
-      club.querySelectorAll('[data-club-select]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      if (board) {
-        board.dataset.memberBoard = earlier ? 'earlier' : 'best';
-        board.setAttribute('aria-label', `${earlier ? 4 : 15} circles represent ${earlier ? 4 : 15} Card Game Club members`);
-      }
-      if (count) count.textContent = earlier ? '4' : '15';
-    }));
+  document.querySelectorAll('[data-growth]').forEach(chart => {
+    const replay = chart.querySelector('[data-growth-replay]');
+    replay?.addEventListener('click', async () => {
+      if (!motion || replay.disabled) return;
+      replay.disabled = true;
+      const animations = [...chart.querySelectorAll('.growth-fill')].map(bar =>
+        bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+          { duration: 1200, easing: 'cubic-bezier(.22,1,.36,1)' }));
+      await Promise.allSettled(animations.map(animation => animation.finished));
+      replay.disabled = !motion;
+    });
   });
 
   document.querySelectorAll('[data-pb]').forEach(card => {

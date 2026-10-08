@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" fill="none">
+  <defs>
+    <g id="ct-ace" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" stroke-linejoin="miter">
+      <path d="M0 16L6 0L12 16M3 10H9"/>
+    </g>
+    <path id="ct-heart" d="M0 17C-5 11-19 3-19-7C-19-20-4-23 0-12C4-23 19-20 19-7C19 3 5 11 0 17Z"/>
+    <path id="ct-spade" d="M0-23C-6-16-21-6-21 4C-21 14-9 18-2 9L-5 24H5L2 9C9 18 21 14 21 4C21-6 6-16 0-23Z"/>
+    <path id="ct-diamond" d="M0-26L19 0L0 26L-19 0Z"/>
+    <path id="ct-club" d="M0-23C-12-23-14-8-7-3C-20-11-28 5-18 14C-11 20-4 15-2 10L-5 25H5L2 10C4 15 11 20 18 14C28 5 20-11 7-3C14-8 12-23 0-23Z"/>
+    <pattern id="ct-felt" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="5" r=".65" fill="#d4ec8b" opacity=".12"/>
+      <circle cx="13" cy="13" r=".6" fill="#d4ec8b" opacity=".10"/>
+    </pattern>
+    <pattern id="ct-cardback" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M8 1L15 8L8 15L1 8Z" stroke="#d4ec8b" stroke-width=".75"/>
+      <circle cx="8" cy="8" r="1.2" fill="#d4ec8b"/>
+    </pattern>
+  </defs>
+  <path d="M72 226C67 113 171 57 302 45C452 31 558 87 565 206C572 326 475 388 331 391C199 394 78 351 72 226Z" fill="#f4f4ef"/>
+  <ellipse cx="321" cy="231" rx="244" ry="157" transform="rotate(-7 321 231)" fill="#17201b"/>
+  <ellipse cx="319" cy="220" rx="239" ry="155" transform="rotate(-7 319 220)" fill="#b3bea6"/>
+  <ellipse cx="319" cy="218" rx="226" ry="143" transform="rotate(-7 319 218)" fill="#354534" stroke="#17201b" stroke-width="2"/>
+  <ellipse cx="319" cy="218" rx="211" ry="128" transform="rotate(-7 319 218)" stroke="#b3bea6" stroke-width="1" stroke-dasharray="2 6"/>
+  <ellipse cx="319" cy="218" rx="225" ry="142" transform="rotate(-7 319 218)" fill="url(#ct-felt)"/>
+  <path d="M105 249C113 296 165 330 218 344M513 154C519 167 523 181 522 195" stroke="#d4ec8b" stroke-width="2" stroke-linecap="round"/>
+  <g transform="translate(133 235) rotate(-18)">
+    <rect x="4" y="9" width="80" height="111" rx="5" fill="#17201b" opacity=".45"/>
+    <rect x="0" y="5" width="80" height="111" rx="5" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <path d="M1 105H79M1 110H79" stroke="#b3bea6" stroke-width="1.5"/>
+    <rect width="80" height="106" rx="5" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <rect x="8" y="8" width="64" height="90" rx="1" fill="#354534"/>
+    <rect x="8" y="8" width="64" height="90" rx="1" fill="url(#ct-cardback)"/>
+    <path d="M40 29L57 52L40 76L23 52Z" fill="#d4ec8b" stroke="#f4f4ef" stroke-width="2"/>
+    <use href="#ct-club" transform="translate(40 51) scale(.43)" fill="#17201b"/>
+  </g>
+  <path d="M235 259C281 287 364 291 430 249" stroke="#17201b" stroke-width="22" stroke-linecap="round" opacity=".25"/>
+  <g transform="translate(190 101) rotate(-26 55 148)">
+    <rect x="3" y="5" width="109" height="161" rx="7" fill="#17201b"/>
+    <rect width="109" height="161" rx="7" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <use href="#ct-ace" transform="translate(12 13)" color="#17201b"/>
+    <use href="#ct-club" transform="translate(18 43) scale(.29)" fill="#17201b"/>
+    <use href="#ct-club" transform="translate(55 81) scale(1.1)" fill="#17201b"/>
+    <g transform="translate(97 147) rotate(180)">
+      <use href="#ct-ace" color="#17201b"/>
+      <use href="#ct-club" transform="translate(6 30) scale(.29)" fill="#17201b"/>
+    </g>
+  </g>
+  <g transform="translate(251 81) rotate(-9 55 148)">
+    <rect x="3" y="5" width="109" height="161" rx="7" fill="#17201b"/>
+    <rect width="109" height="161" rx="7" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <use href="#ct-ace" transform="translate(12 13)" color="#354534"/>
+    <use href="#ct-diamond" transform="translate(18 43) scale(.27)" fill="#354534"/>
+    <use href="#ct-diamond" transform="translate(55 81) scale(1.08)" fill="#354534"/>
+    <path d="M55 65L66 81L55 97L44 81Z" fill="#d4ec8b"/>
+    <g transform="translate(97 147) rotate(180)">
+      <use href="#ct-ace" color="#354534"/>
+      <use href="#ct-diamond" transform="translate(6 30) scale(.27)" fill="#354534"/>
+    </g>
+  </g>
+  <g transform="translate(310 91) rotate(10 55 148)">
+    <rect x="3" y="5" width="109" height="161" rx="7" fill="#17201b"/>
+    <rect width="109" height="161" rx="7" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <use href="#ct-ace" transform="translate(12 13)" color="#17201b"/>
+    <use href="#ct-spade" transform="translate(18 43) scale(.29)" fill="#17201b"/>
+    <use href="#ct-spade" transform="translate(55 81) scale(1.1)" fill="#17201b"/>
+    <path d="M55 63V95" stroke="#d4ec8b" stroke-width="1.6"/>
+    <g transform="translate(97 147) rotate(180)">
+      <use href="#ct-ace" color="#17201b"/>
+      <use href="#ct-spade" transform="translate(6 30) scale(.29)" fill="#17201b"/>
+    </g>
+  </g>
+  <g transform="translate(364 121) rotate(28 55 148)">
+    <rect x="3" y="5" width="109" height="161" rx="7" fill="#17201b"/>
+    <rect width="109" height="161" rx="7" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <use href="#ct-ace" transform="translate(12 13)" color="#354534"/>
+    <use href="#ct-heart" transform="translate(18 44) scale(.31)" fill="#354534"/>
+    <use href="#ct-heart" transform="translate(55 82) scale(1.21)" fill="#354534"/>
+    <path d="M44 66C41 62 37 67 40 73" stroke="#d4ec8b" stroke-width="2" stroke-linecap="round"/>
+    <g transform="translate(97 147) rotate(180)">
+      <use href="#ct-ace" color="#354534"/>
+      <use href="#ct-heart" transform="translate(6 31) scale(.31)" fill="#354534"/>
+    </g>
+  </g>
+  <g transform="translate(485 84)">
+    <circle cx="0" cy="3" r="37" fill="#17201b" opacity=".22"/>
+    <circle r="37" fill="#b3bea6" stroke="#17201b" stroke-width="2"/>
+    <circle r="29" fill="#f4f4ef" stroke="#17201b" stroke-width="1.5"/>
+    <path d="M22-8H31C42-8 42 8 31 8H23" stroke="#17201b" stroke-width="9" stroke-linecap="round"/>
+    <path d="M22-8H31C42-8 42 8 31 8H23" stroke="#f4f4ef" stroke-width="5" stroke-linecap="round"/>
+    <circle r="23" fill="#f4f4ef" stroke="#17201b" stroke-width="2"/>
+    <circle r="17" fill="#17201b"/>
+    <path d="M-10-7C-6-13 3-14 9-9" stroke="#b3bea6" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(327 326) rotate(-12)">
+    <path d="M-4-4H111L123 1L111 6H-4Z" fill="#17201b"/>
+    <path d="M0-5H103V3H0Z" fill="#d4ec8b" stroke="#17201b" stroke-width="1.5"/>
+    <path d="M103-5L117-1L103 3Z" fill="#f4f4ef" stroke="#17201b" stroke-width="1.5"/>
+    <path d="M113-2L118-1L113 1Z" fill="#17201b"/>
+    <path d="M8-4V2M15-4V2" stroke="#354534" stroke-width="1.5"/>
+  </g>
+  <path d="M58 171L46 165M63 149L58 134M79 133L83 119" stroke="#354534" stroke-width="2" stroke-linecap="round"/>
+  <path d="M522 339L534 345M508 354L512 366" stroke="#354534" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="250" cy="332" r="3" fill="#d4ec8b"/>
+  <circle cx="267" cy="337" r="3" fill="#d4ec8b"/>
+  <circle cx="284" cy="339" r="3" fill="#d4ec8b"/>
+</svg>
